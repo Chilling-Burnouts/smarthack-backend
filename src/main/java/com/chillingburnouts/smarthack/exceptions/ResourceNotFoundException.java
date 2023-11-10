@@ -1,0 +1,7 @@
+package com.chillingburnouts.smarthack.exceptions;
+
+public class ResourceNotFoundException extends RuntimeException {
+    public ResourceNotFoundException(String msg) {
+        super(msg);
+    }
+}
