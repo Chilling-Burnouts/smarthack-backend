@@ -24,5 +24,7 @@ public class CompanyDto {
     private String longDescription;
     @JsonProperty("short_description")
     private String shortDescription;
+    @JsonProperty("year_founded")
+    private Long yearFounded;
 
 }

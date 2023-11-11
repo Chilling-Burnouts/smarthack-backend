@@ -8,5 +8,6 @@ import lombok.Data;
 public class FilterDto {
     private String attribute;
     private String relation;
-    private String value;
+    private Object value;
+    private Long strictness;
 }

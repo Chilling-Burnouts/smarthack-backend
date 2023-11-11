@@ -12,16 +12,16 @@ import com.chillingburnouts.smarthack.entities.User;
 import com.chillingburnouts.smarthack.repositories.CompanyRepository;
 import com.chillingburnouts.smarthack.repositories.PortofolioRepository;
 import com.chillingburnouts.smarthack.repositories.UserRepository;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToOne;
+import com.chillingburnouts.smarthack.services.SearchService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/companies")
@@ -31,6 +31,8 @@ public class CompanyController {
     private final VeridionClient veridionClient;
 
     private final UserRepository userRepository;
+
+    private final SearchService searchService;
 
     private final PortofolioRepository portofolioRepository;
     private final CompanyRepository companyRepository;
@@ -44,6 +46,44 @@ public class CompanyController {
                                 .value(body.getCompanyName())
                                 .relation("matches")
                                 .build())).build();
+        var data =veridionClient.searchCompany(request);
+        data.getCompanies().forEach(c -> c.setUuid(UUID.randomUUID().toString()));
+        return ResponseEntity.ok(data);
+    }
+
+    @GetMapping("/search/new-it")
+    public ResponseEntity<SearchCompanyResponse> searchNewItCompany(){
+
+        var request = SearchCompanyRequestVeridion.builder()
+                .filters(List.of(
+                        searchService.getDateBetween(2022L,2023L),
+                        searchService.getWithIndustry(List.of("IT"))
+                )).build();
+        var data =veridionClient.searchCompany(request);
+        data.getCompanies().forEach(c -> c.setUuid(UUID.randomUUID().toString()));
+        return ResponseEntity.ok(data);
+    }
+
+    @GetMapping("/search/big")
+    public ResponseEntity<SearchCompanyResponse> searchBigCompany(){
+
+        var request = SearchCompanyRequestVeridion.builder()
+                .filters(List.of(
+                        searchService.getWithRevenue(100000000L)
+                )).build();
+        var data =veridionClient.searchCompany(request);
+        data.getCompanies().forEach(c -> c.setUuid(UUID.randomUUID().toString()));
+        return ResponseEntity.ok(data);
+    }
+
+    @GetMapping("/search/green")
+    public ResponseEntity<SearchCompanyResponse> searchGreenEnergy(){
+
+        var request = SearchCompanyRequestVeridion.builder()
+                .filters(List.of(
+                        searchService.getWithKeywordsAndExclude(List.of("solar energy", "green energy"),
+                                List.of("wind"))
+                )).build();
         var data =veridionClient.searchCompany(request);
         data.getCompanies().forEach(c -> c.setUuid(UUID.randomUUID().toString()));
         return ResponseEntity.ok(data);
