@@ -43,8 +43,8 @@ public class CompanyController {
     }
 
     @PostMapping()
-    public ResponseEntity<Void> saveCompany(@RequestBody CompanyDto body, Principal principal){
-        Optional<User> u = userRepository.findByName(principal.getName());
+    public ResponseEntity<Void> saveCompany(@RequestBody CompanyDto body){
+        Optional<User> u = userRepository.findByName("user");
         User up = u.orElseThrow(()->new IllegalArgumentException());
         Company company = new Company();
         company.setCompanyName(body.getCompanyName());
