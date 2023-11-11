@@ -14,7 +14,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@EnableWebSecurity
+//@EnableWebSecurity
 public class SecurityConfig {
     @Bean
     public static PasswordEncoder passwordEncoder(){
@@ -24,7 +24,7 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http
+        http.csrf().disable()
                 .authorizeHttpRequests((authorize) -> {
                     authorize.anyRequest().authenticated();
                 }).httpBasic(Customizer.withDefaults());
@@ -34,7 +34,7 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService(){
 
-        UserDetails ramesh = User.builder()
+        UserDetails ud = User.builder()
                 .username("user")
                 .password(passwordEncoder().encode("user"))
                 .roles("USER")
@@ -46,6 +46,6 @@ public class SecurityConfig {
                 .roles("ADMIN")
                 .build();
 
-        return new InMemoryUserDetailsManager(ramesh, admin);
+        return new InMemoryUserDetailsManager(ud, admin);
     }
 }
