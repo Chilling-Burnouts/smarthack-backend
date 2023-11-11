@@ -7,6 +7,7 @@ import com.chillingburnouts.smarthack.dtos.requests.search.SearchCompanyRequestD
 import com.chillingburnouts.smarthack.dtos.requests.search.SearchCompanyRequestVeridion;
 import com.chillingburnouts.smarthack.dtos.responses.requests.SearchCompanyResponse;
 import com.chillingburnouts.smarthack.entities.Company;
+import com.chillingburnouts.smarthack.entities.Portofolio;
 import com.chillingburnouts.smarthack.entities.User;
 import com.chillingburnouts.smarthack.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -44,15 +46,19 @@ public class CompanyController {
 
     @PostMapping()
     public ResponseEntity<Void> saveCompany(@RequestBody CompanyDto body, Principal principal){
-        User u = userRepository.findByName(principal.getName());
+        Optional<User> u = userRepository.findByName(principal.getName());
+        User up = u.orElseThrow(()->new IllegalArgumentException());
         Company company = new Company();
         company.setCompanyName(body.getCompanyName());
         company.setBusinessTags(body.getBusinessTags());
         company.setLongDescription(body.getLongDescription());
         company.setMainCountry(body.getMainCountry());
         company.setShortDescription(body.getShortDescription());
-        u.getPortofolio().getCompanies().add(company);
-        userRepository.save(u);
+        if(up.getPortofolio() == null){
+            up.setPortofolio(new Portofolio());
+        }
+        up.getPortofolio().getCompanies().add(company);
+        userRepository.save(up);
         return ResponseEntity.status(201).build();
     }
 }
