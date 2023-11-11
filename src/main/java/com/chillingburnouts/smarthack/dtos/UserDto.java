@@ -1,5 +1,6 @@
 package com.chillingburnouts.smarthack.dtos;
 
+import com.chillingburnouts.smarthack.entities.Portofolio;
 import lombok.*;
 
 import java.util.Set;
@@ -11,5 +12,5 @@ import java.util.Set;
 public class UserDto {
     private Long id;
     private String name;
-    private Set<CourseDto> courses;
+    private PortofolioDto portofolio;
 }

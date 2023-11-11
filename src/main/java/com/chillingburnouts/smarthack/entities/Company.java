@@ -17,6 +17,9 @@ public class Company {
     private Long id;
 
     private String name;
+    private String uuid;
+    private String naicsCode;
+    private String naicsLabel;
 
     private String companyName;
     private String mainCountry;
@@ -98,4 +101,29 @@ public class Company {
     public void setPortofolios(Set<Portofolio> portofolios) {
         this.portofolios = portofolios;
     }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public String getNaicsCode() {
+        return naicsCode;
+    }
+
+    public void setNaicsCode(String naicsCode) {
+        this.naicsCode = naicsCode;
+    }
+
+    public String getNaicsLabel() {
+        return naicsLabel;
+    }
+
+    public void setNaicsLabel(String naicsLabel) {
+        this.naicsLabel = naicsLabel;
+    }
+
 }
