@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.chillingburnouts.smarthack.dtos.CourseDto;
-import com.chillingburnouts.smarthack.entities.Course;
+import com.chillingburnouts.smarthack.entities.Company;
 import com.chillingburnouts.smarthack.services.CourseService;
 
 import java.util.List;
@@ -22,8 +22,8 @@ public class CourseController {
 
     @GetMapping()
     public ResponseEntity<List<CourseDto>> findAllCourses() {
-        List<Course> courses = courseService.findAll();
-        List<CourseDto> mappedCourses = courses.stream().map(this::convertToDto).collect(Collectors.toList());
+        List<Company> cours = courseService.findAll();
+        List<CourseDto> mappedCourses = cours.stream().map(this::convertToDto).collect(Collectors.toList());
         return ResponseEntity.ok(mappedCourses);
     }
 
@@ -35,22 +35,22 @@ public class CourseController {
 
     @PostMapping()
     public ResponseEntity<CourseDto> saveCourse(@RequestBody CourseDto course) {
-        Course mappedCourse = convertToEntity(course);
-        Course savedCourse = courseService.save(mappedCourse);
-        return ResponseEntity.ok(convertToDto(savedCourse));
+        Company mappedCompany = convertToEntity(course);
+        Company savedCompany = courseService.save(mappedCompany);
+        return ResponseEntity.ok(convertToDto(savedCompany));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<CourseDto> updateCourse(@PathVariable Long id, @RequestBody CourseDto courseDto) {
-        Course mappedCourse = convertToEntity(courseDto);
-        Course updatedCourse = courseService.updateCourse(id, mappedCourse);
-        return ResponseEntity.ok(convertToDto(updatedCourse));
+        Company mappedCompany = convertToEntity(courseDto);
+        Company updatedCompany = courseService.updateCourse(id, mappedCompany);
+        return ResponseEntity.ok(convertToDto(updatedCompany));
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<CourseDto> patchCourse(@PathVariable Long id, @RequestBody Map<String, Object> updates) {
-        Course updatedCourse = courseService.patchCourse(id, updates);
-        CourseDto mappedCourse = convertToDto(updatedCourse);
+        Company updatedCompany = courseService.patchCourse(id, updates);
+        CourseDto mappedCourse = convertToDto(updatedCompany);
         return ResponseEntity.ok(mappedCourse);
     }
 
@@ -60,16 +60,16 @@ public class CourseController {
         return ResponseEntity.noContent().build();
     }
 
-    private CourseDto convertToDto(Course course) {
-        return modelMapper.map(course, CourseDto.class);
+    private CourseDto convertToDto(Company company) {
+        return modelMapper.map(company, CourseDto.class);
     }
 
-    private Course convertToEntity(CourseDto courseDto) {
-        Course course = modelMapper.map(courseDto, Course.class);
+    private Company convertToEntity(CourseDto courseDto) {
+        Company company = modelMapper.map(courseDto, Company.class);
         if (courseDto.getId() != null) {
-            course = courseService.findById(courseDto.getId());
+            company = courseService.findById(courseDto.getId());
         }
-        return course;
+        return company;
     }
 
 }

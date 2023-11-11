@@ -1,12 +1,12 @@
 package com.chillingburnouts.smarthack.services;
 
+import com.chillingburnouts.smarthack.entities.Portofolio;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import com.chillingburnouts.smarthack.entities.Course;
-import com.chillingburnouts.smarthack.entities.User;
+import com.chillingburnouts.smarthack.entities.Company;
 import com.chillingburnouts.smarthack.exceptions.ResourceNotFoundException;
-import com.chillingburnouts.smarthack.repositories.CourseRepository;
+import com.chillingburnouts.smarthack.repositories.CompanyRepository;
 
 import java.util.List;
 import java.util.Map;
@@ -15,45 +15,45 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 public class CourseService {
-    private final CourseRepository courseRepository;
+    private final CompanyRepository companyRepository;
 
-    public List<Course> findAll() {
-        return courseRepository.findAll();
+    public List<Company> findAll() {
+        return companyRepository.findAll();
     }
 
-    public Course save(Course course) {
-        return courseRepository.save(course);
+    public Company save(Company company) {
+        return companyRepository.save(company);
     }
 
-    public Course updateCourse(Long id, Course course) { // todo change
-        Course existingCourse = courseRepository.findById(id)
+    public Company updateCourse(Long id, Company company) { // todo change
+        Company existingCompany = companyRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        existingCourse.setName(course.getName());
-        existingCourse.setUsers(course.getUsers());
-        return courseRepository.save(existingCourse);
+        existingCompany.setName(company.getName());
+        existingCompany.setUsers(company.getUsers());
+        return companyRepository.save(existingCompany);
     }
 
-    public Course patchCourse(Long id, Map<String, Object> updates) {
+    public Company patchCourse(Long id, Map<String, Object> updates) {
         // Find the existing course, apply the updates, and save it
-        Course existingCourse = courseRepository.findById(id)
+        Company existingCompany = companyRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Course not found"));
         if (updates.containsKey("name")) {
-            existingCourse.setName((String) updates.get("name"));
+            existingCompany.setName((String) updates.get("name"));
         }
         if (updates.containsKey("users")) { // todo here is should be List<UserDto>
             // Assume that updates.get("courses") returns a List<Course>
-            existingCourse.setUsers((Set<User>) updates.get("users"));
+            existingCompany.setUsers((Set<Portofolio>) updates.get("users"));
         }
-        return courseRepository.save(existingCourse);
+        return companyRepository.save(existingCompany);
     }
 
     public void deleteCourse(Long id) {
-        courseRepository.findById(id)
+        companyRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Course not found with id " + id));
-        courseRepository.deleteById(id);
+        companyRepository.deleteById(id);
     }
 
-    public Course findById(Long id) {
-        return courseRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("not found"));
+    public Company findById(Long id) {
+        return companyRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("not found"));
     }
 }

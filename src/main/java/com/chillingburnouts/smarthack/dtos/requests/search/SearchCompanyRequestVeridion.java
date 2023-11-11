@@ -1,4 +1,4 @@
-package com.chillingburnouts.smarthack.dtos.requests;
+package com.chillingburnouts.smarthack.dtos.requests.search;
 
 import com.chillingburnouts.smarthack.dtos.FilterDto;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -10,6 +10,8 @@ import java.util.List;
 @Data
 @Builder
 public class CompanyDto {
+    @JsonProperty("uuid")
+    private String uuid;
     @JsonProperty("company_name")
     private String companyName;
     @JsonProperty("naics_2022")

@@ -7,16 +7,14 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String name;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_courses", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id"))
-    private Set<Course> courses;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Portofolio portofolio;
 
     public Long getId() {
         return id;
@@ -34,11 +32,11 @@ public class User {
         this.name = name;
     }
 
-    public Set<Course> getCourses() {
-        return courses;
+    public Portofolio getPortofolio() {
+        return portofolio;
     }
 
-    public void setCourses(Set<Course> courses) {
-        this.courses = courses;
+    public void setPortofolio(Portofolio portofolio) {
+        this.portofolio = portofolio;
     }
 }

@@ -1,12 +1,12 @@
 package com.chillingburnouts.smarthack.controllers;
 
+import com.chillingburnouts.smarthack.entities.Portofolio;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.chillingburnouts.smarthack.dtos.UserDto;
-import com.chillingburnouts.smarthack.entities.User;
 import com.chillingburnouts.smarthack.services.UserService;
 
 import java.util.List;
@@ -22,8 +22,8 @@ public class UserController {
 
     @GetMapping()
     public ResponseEntity<List<UserDto>> findAllUsers() {
-        List<User> users = userService.findAll();
-        List<UserDto> mappedUsers = users.stream()
+        List<Portofolio> portofolios = userService.findAll();
+        List<UserDto> mappedUsers = portofolios.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(mappedUsers);
@@ -31,30 +31,30 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> findUser(@PathVariable("id") Long id) {
-        User user = userService.findById(id);
-        UserDto userDto = convertToDto(user);
+        Portofolio portofolio = userService.findById(id);
+        UserDto userDto = convertToDto(portofolio);
         return ResponseEntity.ok(userDto);
     }
 
     @PostMapping()
     public ResponseEntity<UserDto> saveUser(@RequestBody UserDto userDto) {
-        User mappedUser = convertToEntity(userDto);
-        User savedUser = userService.save(mappedUser);
-        return ResponseEntity.ok(convertToDto(savedUser));
+        Portofolio mappedPortofolio = convertToEntity(userDto);
+        Portofolio savedPortofolio = userService.save(mappedPortofolio);
+        return ResponseEntity.ok(convertToDto(savedPortofolio));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
-        User mappedUser = convertToEntity(userDto);
-        User savedUser = userService.updateUser(id, mappedUser);
-        UserDto userMappedDto = convertToDto(savedUser);
+        Portofolio mappedPortofolio = convertToEntity(userDto);
+        Portofolio savedPortofolio = userService.updateUser(id, mappedPortofolio);
+        UserDto userMappedDto = convertToDto(savedPortofolio);
         return ResponseEntity.ok(userMappedDto);
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<UserDto> patchUser(@PathVariable Long id, @RequestBody Map<String, Object> updates) {
-        User updatedUser = userService.patchUser(id, updates);
-        UserDto mappedUser = convertToDto(updatedUser);
+        Portofolio updatedPortofolio = userService.patchUser(id, updates);
+        UserDto mappedUser = convertToDto(updatedPortofolio);
         return ResponseEntity.ok(mappedUser);
     }
 
@@ -64,15 +64,15 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    private UserDto convertToDto(User user) {
-        return modelMapper.map(user, UserDto.class);
+    private UserDto convertToDto(Portofolio portofolio) {
+        return modelMapper.map(portofolio, UserDto.class);
     }
 
-    private User convertToEntity(UserDto userDto) {
-        User user = modelMapper.map(userDto, User.class);
+    private Portofolio convertToEntity(UserDto userDto) {
+        Portofolio portofolio = modelMapper.map(userDto, Portofolio.class);
         if (userDto.getId() != null) {
-            user = userService.findById(userDto.getId());
+            portofolio = userService.findById(userDto.getId());
         }
-        return user;
+        return portofolio;
     }
 }

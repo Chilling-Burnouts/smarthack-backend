@@ -8,11 +8,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 
-import com.chillingburnouts.smarthack.controllers.UserController;
-import com.chillingburnouts.smarthack.dtos.CourseDto;
 import com.chillingburnouts.smarthack.dtos.UserDto;
-import com.chillingburnouts.smarthack.entities.Course;
-import com.chillingburnouts.smarthack.entities.User;
+import com.chillingburnouts.smarthack.entities.Portofolio;
 import com.chillingburnouts.smarthack.services.UserService;
 
 import java.util.Collections;
@@ -26,7 +23,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
-class UserControllerTest {
+class PortofolioControllerTest {
     @Mock
     private UserService userService;
 
@@ -39,10 +36,10 @@ class UserControllerTest {
     @Test
     void findAllUsers() {
         // Arrange
-        User user = new User();
+        Portofolio portofolio = new Portofolio();
         UserDto userDto = new UserDto();
-        when(userService.findAll()).thenReturn(Collections.singletonList(user));
-        when(modelMapper.map(user, UserDto.class)).thenReturn(userDto);
+        when(userService.findAll()).thenReturn(Collections.singletonList(portofolio));
+        when(modelMapper.map(portofolio, UserDto.class)).thenReturn(userDto);
 
         // Act
         ResponseEntity<List<UserDto>> response = userController.findAllUsers();
@@ -56,10 +53,10 @@ class UserControllerTest {
     @Test
     void findUser() {
         // Arrange
-        User user = new User();
+        Portofolio portofolio = new Portofolio();
         UserDto userDto = new UserDto();
-        when(userService.findById(anyLong())).thenReturn(user);
-        when(modelMapper.map(user, UserDto.class)).thenReturn(userDto);
+        when(userService.findById(anyLong())).thenReturn(portofolio);
+        when(modelMapper.map(portofolio, UserDto.class)).thenReturn(userDto);
 
         // Act
         ResponseEntity<UserDto> response = userController.findUser(1L);
@@ -73,10 +70,10 @@ class UserControllerTest {
     void saveUser() {
         // Arrange
         UserDto userDto = new UserDto();
-        User user = new User();
-        when(modelMapper.map(userDto, User.class)).thenReturn(user);
-        when(userService.save(user)).thenReturn(user);
-        when(modelMapper.map(user, UserDto.class)).thenReturn(userDto);
+        Portofolio portofolio = new Portofolio();
+        when(modelMapper.map(userDto, Portofolio.class)).thenReturn(portofolio);
+        when(userService.save(portofolio)).thenReturn(portofolio);
+        when(modelMapper.map(portofolio, UserDto.class)).thenReturn(userDto);
 
         // Act
         ResponseEntity<UserDto> response = userController.saveUser(userDto);
@@ -91,10 +88,10 @@ class UserControllerTest {
         // Arrange
         Long userId = 1L;
         UserDto userDto = new UserDto();
-        User user = new User();
-        when(modelMapper.map(userDto, User.class)).thenReturn(user);
-        when(userService.updateUser(userId, user)).thenReturn(user);
-        when(modelMapper.map(user, UserDto.class)).thenReturn(userDto);
+        Portofolio portofolio = new Portofolio();
+        when(modelMapper.map(userDto, Portofolio.class)).thenReturn(portofolio);
+        when(userService.updateUser(userId, portofolio)).thenReturn(portofolio);
+        when(modelMapper.map(portofolio, UserDto.class)).thenReturn(userDto);
 
         // Act
         ResponseEntity<UserDto> response = userController.updateUser(userId, userDto);
@@ -109,9 +106,9 @@ class UserControllerTest {
         // Arrange
         Long userId = 1L;
         Map<String, Object> updates = Map.of("name", "New User Name");
-        User user = new User();
-        when(userService.patchUser(userId, updates)).thenReturn(user);
-        when(modelMapper.map(user, UserDto.class)).thenReturn(new UserDto());
+        Portofolio portofolio = new Portofolio();
+        when(userService.patchUser(userId, updates)).thenReturn(portofolio);
+        when(modelMapper.map(portofolio, UserDto.class)).thenReturn(new UserDto());
 
         // Act
         ResponseEntity<UserDto> response = userController.patchUser(userId, updates);
